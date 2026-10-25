@@ -28,6 +28,20 @@
 
         a, button, .tag, .friend-link, .game-item { cursor: url('cursor.png'), pointer; }
 
+        /* --- ШЛЕЙФ ЗА МЫШКОЙ --- */
+        .star-trail {
+            position: absolute;
+            pointer-events: none; /* Чтобы не мешало кликам */
+            font-size: 1.2em;
+            color: #ffb8d0;
+            animation: fadeOutStar 0.8s linear forwards;
+            z-index: 9999;
+        }
+        @keyframes fadeOutStar {
+            0% { opacity: 1; transform: scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: scale(0.2) rotate(90deg) translateY(-20px); }
+        }
+
         /* --- ПЛЕЕР С МУЗЫКОЙ --- */
         .music-player {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
@@ -84,7 +98,7 @@
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
 
-        /* --- БЛОК ДЛЯ ИГР С ОБЛОЖКАМИ --- */
+        /* --- СЕТКА ДЛЯ КАРТИНОК (ИГРЫ И АНИМЕ) --- */
         .game-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -101,7 +115,7 @@
             transition: all 0.3s ease;
             display: block;
             text-decoration: none;
-            background: linear-gradient(45deg, #1a0b1f, #ff6b9d); /* Фон, если картинка не загрузится */
+            background: linear-gradient(45deg, #1a0b1f, #ff6b9d);
         }
 
         .game-item img {
@@ -174,26 +188,21 @@
                 <p>Люблю атмосферные игры, аниме и код.</p>
             </div>
 
-            <!-- БЛОК С ИГРАМИ (ВСЕ ССЫЛКИ РАБОЧИЕ) -->
             <div class="card">
                 <h2>🎮 Люблю игры</h2>
                 <div class="game-grid">
-                    <!-- Valorant -->
                     <a href="https://playvalorant.com/" target="_blank" class="game-item">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA46lJ3EjiIcbfAZDcnwFN8XE_jqQ7B4BxPR_4jeubCQ&s=10" alt="Valorant">
                         <div class="game-title">Valorant</div>
                     </a>
-                    <!-- Dota 2 -->
                     <a href="https://www.dota2.com/" target="_blank" class="game-item">
                         <img src="https://cdn.akamai.steamstatic.com/steam/apps/570/library_600x900.jpg" alt="Dota 2">
                         <div class="game-title">Dota 2</div>
                     </a>
-                    <!-- SCP: SL (Твоя новая ссылка) -->
                     <a href="https://store.steampowered.com/app/700009/SCP_Secret_Laboratory/" target="_blank" class="game-item">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9mkqolwR-oMynjpmwrnR18bbA-3ukaTLXPXM0HQeuzg&s=10" alt="SCP: SL">
                         <div class="game-title">SCP: SL</div>
                     </a>
-                    <!-- Undertale -->
                     <a href="https://store.steampowered.com/app/391540/Undertale/" target="_blank" class="game-item">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTajbvR_l1yusASxwY42W_MM9yvDx-ZQ7ejSHFwJaDww&s=10" alt="Undertale">
                         <div class="game-title">Undertale</div>
@@ -208,6 +217,33 @@
             </div>
         </div>
 
+        <!-- НОВЫЙ БЛОК: ТОП АНИМЕ -->
+        <div class="card">
+            <h2>🌸 Топ аниме</h2>
+            <div class="game-grid">
+                <!-- Бездомный бог -->
+                <a href="https://myanimelist.net/anime/20507/Noragami" target="_blank" class="game-item">
+                    <img src="https://cdn.myanimelist.net/images/anime/1882/117436.jpg" alt="Бездомный бог">
+                    <div class="game-title">Бездомный бог</div>
+                </a>
+                <!-- 5 невест -->
+                <a href="https://myanimelist.net/anime/38101/5-toubun_no_Hanayome" target="_blank" class="game-item">
+                    <img src="https://cdn.myanimelist.net/images/anime/1819/103287.jpg" alt="5 невест">
+                    <div class="game-title">5 невест</div>
+                </a>
+                <!-- Берсерк -->
+                <a href="https://myanimelist.net/anime/33/Berserk" target="_blank" class="game-item">
+                    <img src="https://cdn.myanimelist.net/images/anime/10/79365.jpg" alt="Берсерк">
+                    <div class="game-title">Берсерк</div>
+                </a>
+                <!-- Гуль -->
+                <a href="https://myanimelist.net/anime/22319/Tokyo_Ghoul" target="_blank" class="game-item">
+                    <img src="https://cdn.myanimelist.net/images/anime/5/64449.jpg" alt="Гуль">
+                    <div class="game-title">Гуль</div>
+                </a>
+            </div>
+        </div>
+
         <div class="card">
             <h2>💻 Люблю делать \(・∀・)/</h2>
             <div class="tags">
@@ -218,7 +254,6 @@
             </div>
         </div>
 
-        <!-- ЛУЧШЕ ЧЕМ ДРУГ -->
         <div class="card">
             <h2>💖 Лучше чем друг</h2>
             <div style="text-align: center;">
@@ -226,7 +261,6 @@
             </div>
         </div>
 
-        <!-- ЛУЧШИЕ ДРУЗЬЯ -->
         <div class="card">
             <h2>👑 Лучшие друзья</h2>
             <div style="text-align: center;">
@@ -261,6 +295,32 @@
             localStorage.setItem('visitCount', count);
             document.getElementById('visit-count').innerText = count;
         };
+
+        // --- ШЛЕЙФ ЗА МЫШКОЙ (ЗВЁЗДОЧКИ) ---
+        document.addEventListener('mousemove', function(e) {
+            // Ограничиваем частоту появления (чтобы не тормозило)
+            if (Math.random() > 0.3) return; 
+
+            let star = document.createElement('div');
+            star.classList.add('star-trail');
+            
+            // Массив с эмодзи (можно заменить на "★" или "✦")
+            const symbols = ['✨', '⭐', '🌟', '✦'];
+            star.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            
+            // Позиция звездочки
+            star.style.left = e.pageX + 'px';
+            star.style.top = e.pageY + 'px';
+            
+            // Случайный размер
+            const size = Math.random() * 10 + 10;
+            star.style.fontSize = size + 'px';
+            
+            document.body.appendChild(star);
+            
+            // Удаляем через 0.8 секунды
+            setTimeout(() => { star.remove(); }, 800);
+        });
     </script>
 </body>
 </html>
