@@ -101,7 +101,7 @@
             transition: all 0.3s ease;
             display: block;
             text-decoration: none;
-            background: linear-gradient(45deg, #1a0b1f, #ff6b9d); 
+            background: linear-gradient(45deg, #1a0b1f, #ff6b9d); /* Фон, если картинка не загрузится */
         }
 
         .game-item img {
@@ -131,15 +131,6 @@
         }
 
         .game-item:hover .game-title { opacity: 1; }
-
-        /* Кнопка комплимента */
-        .compliment-btn {
-            background: linear-gradient(90deg, #ff6b9d, #c44dff); border: none; color: white;
-            padding: 10px 25px; border-radius: 20px; font-weight: bold; font-size: 1em;
-            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255, 107, 157, 0.4);
-            margin-top: 10px;
-        }
-        .compliment-btn:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 107, 157, 0.8); }
 
         .counter-container { text-align: center; padding: 15px; margin-top: 10px; background: rgba(45, 20, 55, 0.4); border-radius: 20px; border: 1px dashed rgba(255, 107, 157, 0.3); color: #ffb8d0; font-size: 0.9em; }
         .counter-number { font-weight: bold; color: #ff6b9d; font-size: 1.1em; text-shadow: 0 0 10px rgba(255, 107, 157, 0.8); }
@@ -183,28 +174,28 @@
                 <p>Люблю атмосферные игры, аниме и код.</p>
             </div>
 
-            <!-- БЛОК С ИГРАМИ (ЛОКАЛЬНЫЕ ССЫЛКИ ДЛЯ SCP И ДОТЫ) -->
+            <!-- БЛОК С ИГРАМИ (ВСЕ ССЫЛКИ РАБОЧИЕ) -->
             <div class="card">
                 <h2>🎮 Люблю игры</h2>
                 <div class="game-grid">
-                    <!-- Valorant (Твоя рабочая ссылка) -->
+                    <!-- Valorant -->
                     <a href="https://playvalorant.com/" target="_blank" class="game-item">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA46lJ3EjiIcbfAZDcnwFN8XE_jqQ7B4BxPR_4jeubCQ&s" alt="Valorant">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA46lJ3EjiIcbfAZDcnwFN8XE_jqQ7B4BxPR_4jeubCQ&s=10" alt="Valorant">
                         <div class="game-title">Valorant</div>
                     </a>
-                    <!-- Dota 2 (Ищем локальный файл dota2.png) -->
+                    <!-- Dota 2 -->
                     <a href="https://www.dota2.com/" target="_blank" class="game-item">
-                        <img src="dota2.png" alt="Dota 2">
+                        <img src="https://cdn.akamai.steamstatic.com/steam/apps/570/library_600x900.jpg" alt="Dota 2">
                         <div class="game-title">Dota 2</div>
                     </a>
-                    <!-- SCP: SL (Ищем локальный файл scp.png) -->
+                    <!-- SCP: SL (Твоя новая ссылка) -->
                     <a href="https://store.steampowered.com/app/700009/SCP_Secret_Laboratory/" target="_blank" class="game-item">
-                        <img src="scp.png" alt="SCP: SL">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9mkqolwR-oMynjpmwrnR18bbA-3ukaTLXPXM0HQeuzg&s=10" alt="SCP: SL">
                         <div class="game-title">SCP: SL</div>
                     </a>
-                    <!-- Undertale (Твоя рабочая ссылка) -->
+                    <!-- Undertale -->
                     <a href="https://store.steampowered.com/app/391540/Undertale/" target="_blank" class="game-item">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTajbvR_l1yusASxwY42W_MM9yvDx-ZQ7ejSHFwJaDww&s" alt="Undertale">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTajbvR_l1yusASxwY42W_MM9yvDx-ZQ7ejSHFwJaDww&s=10" alt="Undertale">
                         <div class="game-title">Undertale</div>
                     </a>
                 </div>
@@ -225,13 +216,6 @@
                 <span class="tag">Создавать игры</span>
                 <span class="tag">Гулять</span>
             </div>
-        </div>
-
-        <!-- РАНДОМНЫЙ КОМПЛИМЕНТ -->
-        <div class="card" style="text-align: center;">
-            <h2>✨ Комплимент</h2>
-            <p id="compliment-text" style="min-height: 40px; font-weight: bold; color: #ffb8d0; font-size: 1.1em;">Нажми на кнопку!</p>
-            <button class="compliment-btn" onclick="getCompliment()">Скажи что-нибудь милое</button>
         </div>
 
         <!-- ЛУЧШЕ ЧЕМ ДРУГ -->
@@ -277,23 +261,6 @@
             localStorage.setItem('visitCount', count);
             document.getElementById('visit-count').innerText = count;
         };
-
-        // --- КОМПЛИМЕНТЫ ---
-        const compliments = [
-            "Ты сегодня отлично выглядишь! ✨",
-            "Твой вкус в играх просто топ! 🎮",
-            "Не сдавайся, код сам себя не напишет! 💻",
-            "Ты самый крутой посетитель этого сайта! 👑",
-            "Пусть твой день будет таким же ярким, как эта гифка! 🌸",
-            "Улыбнись! Ты классный! 😊",
-            "Желаю тебе много фрагов и побед! 🔥",
-            "Ты умница, у тебя всё получится! 💖"
-        ];
-
-        function getCompliment() {
-            const randomIndex = Math.floor(Math.random() * compliments.length);
-            document.getElementById('compliment-text').innerText = compliments[randomIndex];
-        }
     </script>
 </body>
 </html>
