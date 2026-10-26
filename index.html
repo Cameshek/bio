@@ -73,7 +73,6 @@
             padding: 10px;
             min-width: 180px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
-            
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -175,7 +174,7 @@
 </head>
 <body>
 
-    <!-- СКРЫТЫЙ ПЛЕЕР -->
+    <!-- СКРЫТЫЙ АУДИОПЛЕЕР -->
     <audio id="bg-music" loop style="display:none;"></audio>
 
     <!-- ВИДИМЫЙ ПЛЕЕР -->
@@ -183,7 +182,6 @@
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
         <span class="music-text" id="track-name">MUSIC 1</span>
         
-        <!-- Выпадающая плашка со списком песен -->
         <div class="playlist-dropdown">
             <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC 1</div>
             <div class="playlist-item" onclick="playTrack(1)">🎵 МЁРТВЫЕ КРЕСТЫ</div>
@@ -317,6 +315,7 @@
         var trackName = document.getElementById("track-name");
         var playlistItems = document.querySelectorAll(".playlist-item");
         
+        // Ссылки на файлы
         const playlist = [
             { src: "music.mp3", name: "MUSIC 1" },
             { src: "music2.mp3", name: "МЁРТВЫЕ КРЕСТЫ" }
@@ -324,7 +323,7 @@
         
         let isPlaying = false;
 
-        // Загружаем первый трек при старте
+        // Загружаем первый трек при старте страницы
         music.src = playlist[0].src;
 
         // Включить/поставить на паузу
@@ -338,7 +337,8 @@
                     btn.innerHTML = "⏸";
                     isPlaying = true;
                 }).catch(error => {
-                    alert("Ошибка воспроизведения! Файл поврежден или это не MP3.");
+                    // Если браузер заблокировал или файл битый
+                    alert("Не удалось включить музыку. Причины:\n1. Файл поврежден или это не MP3.\n2. Браузер заблокировал автоплей (нажми на страницу и попробуй снова).");
                 });
             }
         }
@@ -358,7 +358,7 @@
                 btn.innerHTML = "⏸";
                 isPlaying = true;
             }).catch(error => {
-                alert("Ошибка загрузки файла: " + playlist[index].src + "\nПроверь, что файл существует и это MP3.");
+                alert("Файл " + playlist[index].src + " не найден или не поддерживается браузером!");
             });
         }
 
