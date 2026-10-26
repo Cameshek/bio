@@ -73,8 +73,6 @@
             padding: 10px;
             min-width: 180px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
-            
-            /* Скрыто по умолчанию */
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -84,7 +82,6 @@
             gap: 5px;
         }
 
-        /* Появление при наведении на плеер */
         .music-player:hover .playlist-dropdown {
             opacity: 1;
             visibility: visible;
@@ -103,7 +100,7 @@
         .playlist-item:hover {
             background: rgba(255, 107, 157, 0.2);
             color: #fff;
-            padding-left: 20px; /* Небольшой сдвиг при наведении */
+            padding-left: 20px;
         }
 
         .playlist-item.active {
@@ -177,15 +174,14 @@
 </head>
 <body>
 
+    <!-- ТЕСТОВЫЙ ПЛЕЕР (скрыт). Если музыка не играет, удали style="display:none;" и проверь -->
+    <audio id="bg-music" loop controls style="display:none; position:fixed; bottom:10px; left:10px; z-index:9999;"></audio>
+
     <!-- ОБНОВЛЕННЫЙ ПЛЕЕР -->
     <div class="music-player">
-        <audio id="bg-music" loop>
-            <source id="music-source" src="music.mp3" type="audio/mpeg">
-        </audio>
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
         <span class="music-text" id="track-name">MUSIC 1</span>
         
-        <!-- Выпадающая плашка со списком песен -->
         <div class="playlist-dropdown">
             <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC 1</div>
             <div class="playlist-item" onclick="playTrack(1)">🎵 МЁРТВЫЕ КРЕСТЫ</div>
@@ -317,17 +313,17 @@
         var music = document.getElementById("bg-music");
         var btn = document.getElementById("play-btn");
         var trackName = document.getElementById("track-name");
-        var source = document.getElementById("music-source");
         var playlistItems = document.querySelectorAll(".playlist-item");
         
-        // Список треков
         const playlist = [
             { src: "music.mp3", name: "MUSIC 1" },
             { src: "music2.mp3", name: "МЁРТВЫЕ КРЕСТЫ" }
         ];
         
-        let currentTrack = 0;
         let isPlaying = false;
+
+        // Загружаем первый трек при старте
+        music.src = playlist[0].src;
 
         // Включить/поставить на паузу
         function toggleMusic() {
@@ -336,29 +332,33 @@
                 btn.innerHTML = "▶";
                 isPlaying = false;
             } else {
-                music.play();
-                btn.innerHTML = "⏸";
-                isPlaying = true;
+                music.play().then(() => {
+                    btn.innerHTML = "⏸";
+                    isPlaying = true;
+                }).catch(error => {
+                    alert("Ошибка воспроизведения! Скорее всего, файл поврежден или это не настоящий MP3.");
+                    console.error(error);
+                });
             }
         }
 
         // Выбор песни из списка
         function playTrack(index) {
-            currentTrack = index;
-            source.src = playlist[index].src;
+            music.src = playlist[index].src;
             trackName.innerText = playlist[index].name;
             
-            // Подсветка активного трека в списке
             playlistItems.forEach((item, i) => {
                 if (i === index) item.classList.add('active');
                 else item.classList.remove('active');
             });
 
-            // Запуск музыки
             music.load();
-            music.play();
-            btn.innerHTML = "⏸";
-            isPlaying = true;
+            music.play().then(() => {
+                btn.innerHTML = "⏸";
+                isPlaying = true;
+            }).catch(error => {
+                alert("Ошибка загрузки файла: " + playlist[index].src + "\nПроверь, что файл существует и это MP3.");
+            });
         }
 
         // --- СЧЁТЧИК ---
