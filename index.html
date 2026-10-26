@@ -26,7 +26,7 @@
             cursor: url('cursor.png'), auto;
         }
 
-        a, button, .tag, .friend-link, .game-item, .friend-item { cursor: url('cursor.png'), pointer; }
+        a, button, .tag, .friend-link, .game-item, .friend-item, .playlist-item { cursor: url('cursor.png'), pointer; }
 
         /* --- ШЛЕЙФ ЗА МЫШКОЙ (ЗВЁЗДОЧКИ) --- */
         .star-trail {
@@ -50,7 +50,8 @@
             padding: 8px 15px; display: flex; align-items: center; gap: 10px;
             box-shadow: 0 0 20px rgba(255, 107, 157, 0.4); transition: all 0.3s ease;
         }
-        .music-player:hover { box-shadow: 0 0 30px rgba(255, 107, 157, 0.8); transform: scale(1.05); }
+        .music-player:hover { box-shadow: 0 0 30px rgba(255, 107, 157, 0.8); }
+
         .music-btn {
             background: linear-gradient(90deg, #ff6b9d, #c44dff); border: none; color: white;
             width: 35px; height: 35px; border-radius: 50%; font-size: 1.1em;
@@ -58,6 +59,58 @@
         }
         .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 107, 157, 0.8); }
         .music-text { font-size: 0.8em; color: #ffb8d0; font-weight: bold; letter-spacing: 1px; }
+
+        /* --- ВЫПАДАЮЩИЙ СПИСОК ПЕСЕН --- */
+        .playlist-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: rgba(30, 10, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 157, 0.5);
+            border-radius: 15px;
+            padding: 10px;
+            min-width: 180px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
+            
+            /* Скрыто по умолчанию */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        /* Появление при наведении на плеер */
+        .music-player:hover .playlist-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .playlist-item {
+            padding: 8px 15px;
+            font-size: 0.85em;
+            color: #d1c0d8;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 107, 157, 0.2);
+            color: #fff;
+            padding-left: 20px; /* Небольшой сдвиг при наведении */
+        }
+
+        .playlist-item.active {
+            background: rgba(255, 107, 157, 0.3);
+            color: #ff6b9d;
+            font-weight: bold;
+        }
 
         /* --- ФОН --- */
         .bg-flower { position: absolute; color: #ff6b9d; opacity: 0.3; font-size: 1.5em; pointer-events: none; animation: floatBg 6s ease-in-out infinite; }
@@ -96,88 +149,19 @@
         .friend-link { display: inline-block; background: rgba(255, 107, 157, 0.15); border: 1px solid rgba(255, 107, 157, 0.4); color: #ffb8d0; padding: 8px 15px; border-radius: 20px; text-decoration: none; font-size: 0.9em; transition: all 0.3s ease; margin: 0; text-align: center;}
         .friend-link:hover { background: rgba(255, 107, 157, 0.3); color: #fff; box-shadow: 0 0 15px rgba(255, 107, 157, 0.6); }
 
-        /* --- КОНТЕЙНЕР ДЛЯ ДРУЗЕЙ (В ЛИНИЮ) --- */
-        .friends-row {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .friend-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            transition: transform 0.3s ease;
-            width: 100px;
-        }
-
-        .friend-item:hover {
-            transform: scale(1.05);
-        }
-
-        .friend-avatar {
-            width: 80px; 
-            height: 80px; 
-            border-radius: 50%; 
-            border: 3px solid #ff6b9d; 
-            box-shadow: 0 0 20px rgba(255, 107, 157, 0.6); 
-            object-fit: cover; 
-            margin-bottom: 10px;
-        }
+        .friends-row { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 20px; margin-top: 15px; }
+        .friend-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; transition: transform 0.3s ease; width: 100px; }
+        .friend-item:hover { transform: scale(1.05); }
+        .friend-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ff6b9d; box-shadow: 0 0 20px rgba(255, 107, 157, 0.6); object-fit: cover; margin-bottom: 10px; }
 
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
 
-        /* --- СЕТКА ДЛЯ КАРТИНОК (ИГРЫ И АНИМЕ) --- */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 15px;
-        }
-
-        .game-item {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            aspect-ratio: 2 / 3;
-            border: 1px solid rgba(255, 107, 157, 0.3);
-            transition: all 0.3s ease;
-            display: block;
-            text-decoration: none;
-            background: linear-gradient(45deg, #1a0b1f, #ff6b9d);
-        }
-
-        .game-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .game-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(255, 107, 157, 0.6);
-            border-color: #ff6b9d;
-            z-index: 2;
-        }
-
+        .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
+        .game-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 2 / 3; border: 1px solid rgba(255, 107, 157, 0.3); transition: all 0.3s ease; display: block; text-decoration: none; background: linear-gradient(45deg, #1a0b1f, #ff6b9d); }
+        .game-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .game-item:hover { transform: translateY(-5px); box-shadow: 0 0 20px rgba(255, 107, 157, 0.6); border-color: #ff6b9d; z-index: 2; }
         .game-item:hover img { transform: scale(1.1); }
-
-        .game-title {
-            position: absolute;
-            bottom: 0; left: 0; width: 100%;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
-            color: white; text-align: center;
-            padding: 20px 5px 8px 5px;
-            font-size: 0.8em; font-weight: bold;
-            opacity: 0; transition: opacity 0.3s ease;
-        }
-
+        .game-title { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0, 0, 0, 0.9)); color: white; text-align: center; padding: 20px 5px 8px 5px; font-size: 0.8em; font-weight: bold; opacity: 0; transition: opacity 0.3s ease; }
         .game-item:hover .game-title { opacity: 1; }
 
         .counter-container { text-align: center; padding: 15px; margin-top: 10px; background: rgba(45, 20, 55, 0.4); border-radius: 20px; border: 1px dashed rgba(255, 107, 157, 0.3); color: #ffb8d0; font-size: 0.9em; }
@@ -193,12 +177,19 @@
 </head>
 <body>
 
+    <!-- ОБНОВЛЕННЫЙ ПЛЕЕР -->
     <div class="music-player">
         <audio id="bg-music" loop>
-            <source src="music.mp3" type="audio/mpeg">
+            <source id="music-source" src="music.mp3" type="audio/mpeg">
         </audio>
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
-        <span class="music-text">MUSIC</span>
+        <span class="music-text" id="track-name">MUSIC 1</span>
+        
+        <!-- Выпадающая плашка со списком песен -->
+        <div class="playlist-dropdown">
+            <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC 1</div>
+            <div class="playlist-item" onclick="playTrack(1)">🎵 МЁРТВЫЕ КРЕСТЫ</div>
+        </div>
     </div>
 
     <div class="bg-flower f1">🌸</div>
@@ -251,7 +242,6 @@
             </div>
         </div>
 
-        <!-- БЛОК: ТОП АНИМЕ -->
         <div class="card">
             <h2>🌸 Топ аниме</h2>
             <div class="game-grid">
@@ -284,49 +274,35 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА: БОЛЬШЕ ЧЕМ ДРУГ (ФУНДУК + МАРКИЗ) -->
         <div class="card">
             <h2>❤️ Больше чем друг</h2>
             <div class="friends-row">
-                
-                <!-- Фундучок -->
                 <a href="https://steamcommunity.com/profiles/76561199780950714" target="_blank" class="friend-item">
                     <img src="https://avatars.fastly.steamstatic.com/a7cf871d6cb0d21a602c59d78b8a534484d8080b_full.jpg" alt="Фундучок" class="friend-avatar">
                     <span class="friend-link">Фундучок</span>
                 </a>
-
-                <!-- Маркиз -->
                 <a href="https://steamcommunity.com/profiles/76561199481408173" target="_blank" class="friend-item">
                     <img src="https://avatars.fastly.steamstatic.com/bca773364dce96ca990e3069bba9e703480dd159_full.jpg" alt="Маркиз" class="friend-avatar">
                     <span class="friend-link">Маркиз</span>
                 </a>
-
             </div>
         </div>
 
-        <!-- ЛУЧШИЕ ДРУЗЬЯ (В ЛИНИЮ) -->
         <div class="card">
             <h2>👑 Лучшие друзья</h2>
             <div class="friends-row">
-                
-                <!-- nAndi -->
                 <a href="https://steamcommunity.com/id/sonikcol-nAndi" target="_blank" class="friend-item">
                     <img src="https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg" alt="nAndi" class="friend-avatar">
                     <span class="friend-link">nAndi</span>
                 </a>
-
-                <!-- Жареный Бобрик -->
                 <a href="https://steamcommunity.com/profiles/76561199015084231/" target="_blank" class="friend-item">
                     <img src="https://avatars.fastly.steamstatic.com/4628e21b87e0d15d1502564f6dc418e9bfc1e514_full.jpg" alt="Жареный Бобрик" class="friend-avatar">
                     <span class="friend-link">Жареный Бобрик</span>
                 </a>
-
-                <!-- Грех -->
                 <a href="https://steamcommunity.com/id/grehxx" target="_blank" class="friend-item">
                     <img src="https://avatars.fastly.steamstatic.com/3cbc461eeb2b9fd017f787e03e637c3732818ecb_full.jpg" alt="Грех" class="friend-avatar">
                     <span class="friend-link">Грех</span>
                 </a>
-
             </div>
         </div>
 
@@ -340,11 +316,49 @@
         // --- МУЗЫКА ---
         var music = document.getElementById("bg-music");
         var btn = document.getElementById("play-btn");
-        var isPlaying = false;
+        var trackName = document.getElementById("track-name");
+        var source = document.getElementById("music-source");
+        var playlistItems = document.querySelectorAll(".playlist-item");
+        
+        // Список треков
+        const playlist = [
+            { src: "music.mp3", name: "MUSIC 1" },
+            { src: "music2.mp3", name: "МЁРТВЫЕ КРЕСТЫ" }
+        ];
+        
+        let currentTrack = 0;
+        let isPlaying = false;
 
+        // Включить/поставить на паузу
         function toggleMusic() {
-            if (isPlaying) { music.pause(); btn.innerHTML = "▶"; isPlaying = false; }
-            else { music.play(); btn.innerHTML = "⏸"; isPlaying = true; }
+            if (isPlaying) {
+                music.pause();
+                btn.innerHTML = "▶";
+                isPlaying = false;
+            } else {
+                music.play();
+                btn.innerHTML = "⏸";
+                isPlaying = true;
+            }
+        }
+
+        // Выбор песни из списка
+        function playTrack(index) {
+            currentTrack = index;
+            source.src = playlist[index].src;
+            trackName.innerText = playlist[index].name;
+            
+            // Подсветка активного трека в списке
+            playlistItems.forEach((item, i) => {
+                if (i === index) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+
+            // Запуск музыки
+            music.load();
+            music.play();
+            btn.innerHTML = "⏸";
+            isPlaying = true;
         }
 
         // --- СЧЁТЧИК ---
