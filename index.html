@@ -60,55 +60,6 @@
         .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 107, 157, 0.8); }
         .music-text { font-size: 0.8em; color: #ffb8d0; font-weight: bold; letter-spacing: 1px; }
 
-        /* --- ВЫПАДАЮЩИЙ СПИСОК ПЕСЕН --- */
-        .playlist-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 10px;
-            background: rgba(30, 10, 40, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 107, 157, 0.5);
-            border-radius: 15px;
-            padding: 10px;
-            min-width: 180px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .music-player:hover .playlist-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .playlist-item {
-            padding: 8px 15px;
-            font-size: 0.85em;
-            color: #d1c0d8;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            text-align: left;
-        }
-
-        .playlist-item:hover {
-            background: rgba(255, 107, 157, 0.2);
-            color: #fff;
-            padding-left: 20px;
-        }
-
-        .playlist-item.active {
-            background: rgba(255, 107, 157, 0.3);
-            color: #ff6b9d;
-            font-weight: bold;
-        }
-
         /* --- ФОН --- */
         .bg-flower { position: absolute; color: #ff6b9d; opacity: 0.3; font-size: 1.5em; pointer-events: none; animation: floatBg 6s ease-in-out infinite; }
         .f1 { top: 10%; left: 10%; animation-delay: 0s; }
@@ -174,18 +125,13 @@
 </head>
 <body>
 
-    <!-- СКРЫТЫЙ ПЛЕЕР -->
-    <audio id="bg-music" loop style="display:none;"></audio>
+    <!-- СКРЫТЫЙ YOUTUBE ПЛЕЕР (ВЫНЕСЕН ЗА ЭКРАН) -->
+    <div id="youtube-player" style="position: fixed; bottom: -9999px; left: -9999px; width: 10px; height: 10px; opacity: 0; pointer-events: none;"></div>
 
     <!-- ВИДИМЫЙ ПЛЕЕР -->
     <div class="music-player">
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
-        <span class="music-text" id="track-name">MUSIC 1</span>
-        
-        <div class="playlist-dropdown">
-            <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC 1</div>
-            <div class="playlist-item" onclick="playTrack(1)">🎵 МЁРТВЫЕ КРЕСТЫ</div>
-        </div>
+        <span class="music-text" id="track-name">МУЗЫКА</span>
     </div>
 
     <div class="bg-flower f1">🌸</div>
@@ -308,57 +254,51 @@
         </div>
     </div>
 
+    <!-- ПОДКЛЮЧАЕМ YOUTUBE API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // --- МУЗЫКА ---
-        var music = document.getElementById("bg-music");
-        var btn = document.getElementById("play-btn");
+        var player;
+        var isPlaying = false;
         var trackName = document.getElementById("track-name");
-        var playlistItems = document.querySelectorAll(".playlist-item");
         
-        // ТУТ ТВОИ НАЗВАНИЯ ФАЙЛОВ
-        const playlist = [
-            { src: "music.mp3", name: "MUSIC 1" },
-            { src: "music2.mp3", name: "МЁРТВЫЕ КРЕСТЫ" }
-        ];
-        
-        let isPlaying = false;
+        // ТВОЙ ID ВИДЕО С YOUTUBE (взято из твоей ссылки)
+        const videoId = "Z8MzRfVCRPA";
 
-        // Загружаем первый трек при старте страницы
-        music.src = playlist[0].src;
+        // Инициализация YouTube плеера
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '10',
+                width: '10',
+                videoId: videoId,
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'loop': 1,
+                    'playlist': videoId // нужно для зацикливания одной песни
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            trackName.innerText = "МУЗЫКА";
+        }
 
         // Включить/поставить на паузу
         function toggleMusic() {
             if (isPlaying) {
-                music.pause();
-                btn.innerHTML = "▶";
+                player.pauseVideo();
+                document.getElementById("play-btn").innerHTML = "▶";
                 isPlaying = false;
             } else {
-                music.play().then(() => {
-                    btn.innerHTML = "⏸";
-                    isPlaying = true;
-                }).catch(error => {
-                    alert("Ошибка воспроизведения! Проверь, что файл music.mp3 загружен на GitHub и это настоящий MP3.");
-                });
-            }
-        }
-
-        // Выбор песни из списка
-        function playTrack(index) {
-            music.src = playlist[index].src;
-            trackName.innerText = playlist[index].name;
-            
-            playlistItems.forEach((item, i) => {
-                if (i === index) item.classList.add('active');
-                else item.classList.remove('active');
-            });
-
-            music.load();
-            music.play().then(() => {
-                btn.innerHTML = "⏸";
+                player.playVideo();
+                document.getElementById("play-btn").innerHTML = "⏸";
                 isPlaying = true;
-            }).catch(error => {
-                alert("Ошибка загрузки файла: " + playlist[index].src + "\nПроверь, что файл существует и называется ровно так.");
-            });
+            }
         }
 
         // --- СЧЁТЧИК ---
@@ -392,4 +332,4 @@
         });
     </script>
 </body>
-</html>ы
+</html>
