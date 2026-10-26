@@ -73,6 +73,7 @@
             padding: 10px;
             min-width: 180px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
+            
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -174,14 +175,15 @@
 </head>
 <body>
 
-    <!-- ТЕСТОВЫЙ ПЛЕЕР (скрыт). Если музыка не играет, удали style="display:none;" и проверь -->
-    <audio id="bg-music" loop controls style="display:none; position:fixed; bottom:10px; left:10px; z-index:9999;"></audio>
+    <!-- СКРЫТЫЙ ПЛЕЕР -->
+    <audio id="bg-music" loop style="display:none;"></audio>
 
-    <!-- ОБНОВЛЕННЫЙ ПЛЕЕР -->
+    <!-- ВИДИМЫЙ ПЛЕЕР -->
     <div class="music-player">
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
         <span class="music-text" id="track-name">MUSIC 1</span>
         
+        <!-- Выпадающая плашка со списком песен -->
         <div class="playlist-dropdown">
             <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC 1</div>
             <div class="playlist-item" onclick="playTrack(1)">🎵 МЁРТВЫЕ КРЕСТЫ</div>
@@ -336,8 +338,7 @@
                     btn.innerHTML = "⏸";
                     isPlaying = true;
                 }).catch(error => {
-                    alert("Ошибка воспроизведения! Скорее всего, файл поврежден или это не настоящий MP3.");
-                    console.error(error);
+                    alert("Ошибка воспроизведения! Файл поврежден или это не MP3.");
                 });
             }
         }
