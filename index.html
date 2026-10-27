@@ -175,7 +175,7 @@
 </head>
 <body>
 
-    <!-- СКРЫТЫЙ ПЛЕЕР, КОТОРЫЙ БЕРЕТ МУЗЫКУ ПО ТВОЕЙ ССЫЛКЕ -->
+    <!-- СКРЫТЫЙ ПЛЕЕР -->
     <audio id="bg-music" loop style="display:none;"></audio>
 
     <!-- ВИДИМЫЙ ПЛЕЕР -->
@@ -315,7 +315,7 @@
         var trackName = document.getElementById("track-name");
         var playlistItems = document.querySelectorAll(".playlist-item");
         
-        // ТВОЯ ССЫЛКА НА МУЗЫКУ
+        // ТВОЯ ССЫЛКА НА МУЗЫКУ С POMF2.LAIN.LA
         const playlist = [
             { src: "https://pomf2.lain.la/f/je2m2020.mp3", name: "MUSIC" }
         ];
@@ -334,7 +334,7 @@
                     btn.innerHTML = "⏸";
                     isPlaying = true;
                 }).catch(error => {
-                    alert("Ошибка! Не удалось воспроизвести музыку по ссылке.");
+                    alert("Ошибка! Не удалось воспроизвести музыку.");
                 });
             }
         }
