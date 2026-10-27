@@ -60,6 +60,56 @@
         .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 107, 157, 0.8); }
         .music-text { font-size: 0.8em; color: #ffb8d0; font-weight: bold; letter-spacing: 1px; }
 
+        /* --- ВЫПАДАЮЩИЙ СПИСОК ПЕСЕН --- */
+        .playlist-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: rgba(30, 10, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 157, 0.5);
+            border-radius: 15px;
+            padding: 10px;
+            min-width: 180px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
+            
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .music-player:hover .playlist-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .playlist-item {
+            padding: 8px 15px;
+            font-size: 0.85em;
+            color: #d1c0d8;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 107, 157, 0.2);
+            color: #fff;
+            padding-left: 20px;
+        }
+
+        .playlist-item.active {
+            background: rgba(255, 107, 157, 0.3);
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+
         /* --- ФОН --- */
         .bg-flower { position: absolute; color: #ff6b9d; opacity: 0.3; font-size: 1.5em; pointer-events: none; animation: floatBg 6s ease-in-out infinite; }
         .f1 { top: 10%; left: 10%; animation-delay: 0s; }
@@ -130,10 +180,14 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- ВИДИМАЯ КНОПКА -->
+    <!-- ВИДИМЫЙ ПЛЕЕР -->
     <div class="music-player">
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
-        <span class="music-text">MUSIC</span>
+        <span class="music-text" id="track-name">MUSIC</span>
+        
+        <div class="playlist-dropdown">
+            <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC</div>
+        </div>
     </div>
 
     <div class="bg-flower f1">🌸</div>
@@ -260,7 +314,17 @@
         // --- МУЗЫКА ---
         var music = document.getElementById("bg-music");
         var btn = document.getElementById("play-btn");
-        var isPlaying = false;
+        var trackName = document.getElementById("track-name");
+        var playlistItems = document.querySelectorAll(".playlist-item");
+        
+        // ОСТАЛСЯ ТОЛЬКО ОДИН ТРЕК
+        const playlist = [
+            { src: "music.mp3", name: "MUSIC" }
+        ];
+        
+        let isPlaying = false;
+
+        music.src = playlist[0].src;
 
         function toggleMusic() {
             if (isPlaying) {
@@ -272,9 +336,27 @@
                     btn.innerHTML = "⏸";
                     isPlaying = true;
                 }).catch(error => {
-                    alert("Ошибка! Браузер не может найти или воспроизвести файл music.mp3.\n\nУбедись, что он загружен на GitHub в ту же папку, что и index.html и весит не больше 10 МБ.");
+                    alert("Ошибка! Не удалось воспроизвести music.mp3. Убедись, что файл загружен на GitHub и весит не больше 10 МБ.");
                 });
             }
+        }
+
+        function playTrack(index) {
+            music.src = playlist[index].src;
+            trackName.innerText = playlist[index].name;
+            
+            playlistItems.forEach((item, i) => {
+                if (i === index) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+
+            music.load();
+            music.play().then(() => {
+                btn.innerHTML = "⏸";
+                isPlaying = true;
+            }).catch(error => {
+                alert("Ошибка загрузки файла music.mp3.");
+            });
         }
 
         // --- СЧЁТЧИК ---
@@ -286,18 +368,24 @@
             document.getElementById('visit-count').innerText = count;
         };
 
-        // --- ШЛЕЙФ ЗА МЫШКОЙ ---
+        // --- ШЛЕЙФ ЗА МЫШКОЙ (ЗВЁЗДОЧКИ) ---
         document.addEventListener('mousemove', function(e) {
             if (Math.random() > 0.3) return; 
+
             let star = document.createElement('div');
             star.classList.add('star-trail');
+            
             const symbols = ['✨', '⭐', '🌟', '✦'];
             star.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            
             star.style.left = e.pageX + 'px';
             star.style.top = e.pageY + 'px';
+            
             const size = Math.random() * 10 + 10;
             star.style.fontSize = size + 'px';
+            
             document.body.appendChild(star);
+            
             setTimeout(() => { star.remove(); }, 800);
         });
     </script>
