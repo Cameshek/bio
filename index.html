@@ -42,7 +42,7 @@
             100% { opacity: 0; transform: scale(0.2) rotate(90deg) translateY(-20px); }
         }
 
-        /* --- КРАСИВЫЕ АНИМЕ-ГЛАЗА --- */
+        /* --- ГЛАЗА (ПОКА CSS-ЗАГЛУШКА, ПОТОМ ЗАМЕНИМ НА КАРТИНКУ) --- */
         .eyes-container {
             position: fixed;
             bottom: 20px;
@@ -56,117 +56,23 @@
         .eye {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #ffffff 0%, #ffe4ec 100%);
-            border: 4px solid #ff6b9d;
-            border-top-left-radius: 25px;
-            border-top-right-radius: 25px;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
+            background: white;
+            border: 3px solid #ff6b9d;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 20px rgba(255, 107, 157, 0.6), inset 0 0 10px rgba(255, 107, 157, 0.3);
-            position: relative;
+            box-shadow: 0 0 15px rgba(255, 107, 157, 0.6);
             overflow: hidden;
-            animation: blink 4s infinite; /* Моргание */
+            position: relative;
         }
 
-        @keyframes blink {
-            0%, 95%, 100% { transform: scaleY(1); }
-            97% { transform: scaleY(0.1); }
-        }
-
-        /* Реснички */
-        .eye::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -4px;
-            width: 60px;
-            height: 10px;
-            background: #ff6b9d;
-            border-radius: 50%;
-            transform: rotate(-5deg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        /* Розовый зрачок */
         .pupil {
             width: 20px;
             height: 20px;
             background: radial-gradient(circle at 30% 30%, #ff6b9d, #c44dff);
             border-radius: 50%;
-            position: relative;
             transition: transform 0.1s ease;
-            box-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
-        }
-
-        /* Блик в зрачке (чтобы был как в аниме) */
-        .pupil::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.9;
-        }
-
-        /* --- ПЕЧАТАЮЩИЙСЯ ТЕКСТ (ТЕРМИНАЛ) --- */
-        .terminal-card {
-            font-family: 'Courier New', Courier, monospace;
-            background: rgba(0, 0, 0, 0.5) !important;
-            border-color: #ff6b9d !important;
-            text-align: left;
-        }
-
-        .terminal-card h2 {
-            font-family: 'Courier New', Courier, monospace;
-            color: #ff6b9d;
-        }
-
-        .typewriter {
-            color: #00ffcc; /* Зеленоватый текст для терминала */
-            font-size: 1.1em;
-            font-weight: bold;
-            overflow: hidden;
-            border-right: 2px solid #00ffcc;
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: 1px;
-            animation: typing 4s steps(40, end), blink-caret .75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: #00ffcc; }
-        }
-
-        /* --- ТАЙМЕР --- */
-        .timer-container {
-            text-align: center;
-            padding: 15px;
-            background: rgba(45, 20, 55, 0.4);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 107, 157, 0.3);
-            color: #ffb8d0;
-            margin-top: 10px;
-            font-size: 1.2em;
-        }
-
-        .timer-container span {
-            font-weight: bold;
-            color: #ff6b9d;
-            text-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
-            font-size: 1.3em;
-            margin: 0 5px;
         }
 
         /* --- ПЛЕЕР С МУЗЫКОЙ --- */
@@ -187,22 +93,9 @@
         .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 107, 157, 0.8); }
         .music-text { font-size: 0.8em; color: #ffb8d0; font-weight: bold; letter-spacing: 1px; }
 
-        /* --- ВИЗУАЛИЗАТОР (ЭКВАЛАЙЗЕР) --- */
-        .visualizer {
-            display: flex;
-            align-items: flex-end;
-            gap: 3px;
-            height: 20px;
-            margin-left: 5px;
-        }
-        .bar {
-            width: 4px;
-            background: #ff6b9d;
-            border-radius: 2px;
-            height: 4px;
-            box-shadow: 0 0 5px #ff6b9d;
-            transition: height 0.1s ease;
-        }
+        /* --- ВИЗУАЛИЗАТОР --- */
+        .visualizer { display: flex; align-items: flex-end; gap: 3px; height: 20px; margin-left: 5px; }
+        .bar { width: 4px; background: #ff6b9d; border-radius: 2px; height: 4px; box-shadow: 0 0 5px #ff6b9d; transition: height 0.1s ease; }
         .music-player.playing .bar { animation: bounce 0.5s infinite alternate; }
         .music-player.playing .bar:nth-child(1) { animation-delay: 0.0s; }
         .music-player.playing .bar:nth-child(2) { animation-delay: 0.1s; }
@@ -210,21 +103,6 @@
         .music-player.playing .bar:nth-child(4) { animation-delay: 0.15s; }
         .music-player.playing .bar:nth-child(5) { animation-delay: 0.05s; }
         @keyframes bounce { 0% { height: 4px; } 100% { height: 20px; } }
-
-        /* --- ВЫПАДАЮЩИЙ СПИСОК ПЕСЕН --- */
-        .playlist-dropdown {
-            position: absolute; top: 100%; right: 0; margin-top: 10px;
-            background: rgba(30, 10, 40, 0.95); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 107, 157, 0.5); border-radius: 15px;
-            padding: 10px; min-width: 180px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
-            opacity: 0; visibility: hidden; transform: translateY(-10px);
-            transition: all 0.3s ease; display: flex; flex-direction: column; gap: 5px;
-        }
-        .music-player:hover .playlist-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
-        .playlist-item { padding: 8px 15px; font-size: 0.85em; color: #d1c0d8; border-radius: 10px; transition: all 0.2s ease; text-align: left; }
-        .playlist-item:hover { background: rgba(255, 107, 157, 0.2); color: #fff; padding-left: 20px; }
-        .playlist-item.active { background: rgba(255, 107, 157, 0.3); color: #ff6b9d; font-weight: bold; }
 
         /* --- ФОН --- */
         .bg-flower { position: absolute; color: #ff6b9d; opacity: 0.3; font-size: 1.5em; pointer-events: none; animation: floatBg 6s ease-in-out infinite; }
@@ -235,13 +113,36 @@
         .f5 { top: 50%; left: 5%; animation-delay: 4s; }
         @keyframes floatBg { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
 
-        .container { max-width: 800px; width: 100%; display: flex; flex-direction: column; gap: 25px; z-index: 1; }
+        /* --- ОСНОВНОЙ КОНТЕЙНЕР (ТЕПЕРЬ 100% ШИРИНЫ) --- */
+        .container { 
+            max-width: 1000px; 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            z-index: 1; 
+        }
 
-        .card { background: rgba(45, 20, 55, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 107, 157, 0.2); border-radius: 25px; padding: 25px 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 107, 157, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card { 
+            background: rgba(45, 20, 55, 0.6); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 107, 157, 0.2); 
+            border-radius: 25px; 
+            padding: 25px 30px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 107, 157, 0.05); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
         .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(255, 107, 157, 0.2); }
 
         h1, h2 { font-size: 1.3em; color: #ff6b9d; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255, 107, 157, 0.5); display: flex; align-items: center; gap: 10px; }
         p { font-size: 1em; line-height: 1.6; color: #d1c0d8; margin-bottom: 10px; }
+
+        /* --- НОВАЯ СЕТКА (КРАСИВАЯ) --- */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Две колонки одинаковой ширины */
+            gap: 20px;
+        }
 
         .avatar-wrapper { display: flex; justify-content: center; }
         .avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #ff6b9d; box-shadow: 0 0 25px rgba(255, 107, 157, 0.6); transition: transform 0.3s ease; }
@@ -263,8 +164,7 @@
         .friend-item:hover { transform: scale(1.05); }
         .friend-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ff6b9d; box-shadow: 0 0 20px rgba(255, 107, 157, 0.6); object-fit: cover; margin-bottom: 10px; }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
-
+        /* ИГРЫ И АНИМЕ */
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
         .game-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 2 / 3; border: 1px solid rgba(255, 107, 157, 0.3); transition: all 0.3s ease; display: block; text-decoration: none; background: linear-gradient(45deg, #1a0b1f, #ff6b9d); }
         .game-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
@@ -273,21 +173,35 @@
         .game-title { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0, 0, 0, 0.9)); color: white; text-align: center; padding: 20px 5px 8px 5px; font-size: 0.8em; font-weight: bold; opacity: 0; transition: opacity 0.3s ease; }
         .game-item:hover .game-title { opacity: 1; }
 
+        /* ТАЙМЕР */
+        .timer-container {
+            text-align: center;
+            padding: 15px;
+            background: rgba(45, 20, 55, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            color: #ffb8d0;
+            font-size: 1.2em;
+        }
+        .timer-container span {
+            font-weight: bold;
+            color: #ff6b9d;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
+            font-size: 1.3em;
+            margin: 0 5px;
+        }
+
         .counter-container { text-align: center; padding: 15px; margin-top: 10px; background: rgba(45, 20, 55, 0.4); border-radius: 20px; border: 1px dashed rgba(255, 107, 157, 0.3); color: #ffb8d0; font-size: 0.9em; }
         .counter-number { font-weight: bold; color: #ff6b9d; font-size: 1.1em; text-shadow: 0 0 10px rgba(255, 107, 157, 0.8); }
 
-        @media (max-width: 600px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .card { padding: 20px; }
-            .music-player { top: 10px; right: 10px; padding: 5px 10px; }
-            .music-text { display: none; }
-            .eyes-container { bottom: 10px; right: 10px; }
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; } /* На телефонах в одну колонку */
         }
     </style>
 </head>
 <body>
 
-    <!-- КРАСИВЫЕ АНИМЕ-ГЛАЗА -->
+    <!-- ГЛАЗА -->
     <div class="eyes-container">
         <div class="eye"><div class="pupil" id="pupil1"></div></div>
         <div class="eye"><div class="pupil" id="pupil2"></div></div>
@@ -296,19 +210,13 @@
     <!-- СКРЫТЫЙ ПЛЕЕР -->
     <audio id="bg-music" loop style="display:none;"></audio>
 
-    <!-- ВИДИМЫЙ ПЛЕЕР С ВИЗУАЛИЗАТОРОМ -->
+    <!-- ВИДИМЫЙ ПЛЕЕР -->
     <div class="music-player" id="player-container">
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
         <span class="music-text" id="track-name">MUSIC</span>
-        
         <div class="visualizer">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
-
         <div class="playlist-dropdown">
             <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC</div>
         </div>
@@ -321,19 +229,14 @@
     <div class="bg-flower f5">✿</div>
 
     <div class="container">
+        <!-- АВАТАРКА СВЕРХУ ПО ЦЕНТРУ -->
         <div class="card" style="text-align: center;">
             <div class="avatar-wrapper">
                 <img src="1.png" alt="Аватар" class="avatar">
             </div>
         </div>
 
-        <!-- НОВЫЙ БЛОК: ТЕРМИНАЛ -->
-        <div class="card terminal-card">
-            <h2>&gt; Терминал</h2>
-            <p class="typewriter">> Привет! Я Cameshek. Пишу код и играю в игры...</p>
-        </div>
-
-        <!-- ТАЙМЕР ДО ДНЯ РОЖДЕНИЯ -->
+        <!-- ТАЙМЕР -->
         <div class="card timer-container">
             <h2>🎂 До моего Дня Рождения осталось:</h2>
             <div id="countdown" style="font-size: 1.5em; margin-top: 10px; font-weight: bold; color: #ff6b9d; text-shadow: 0 0 10px rgba(255, 107, 157, 0.8);">
@@ -341,9 +244,10 @@
             </div>
         </div>
 
-        <div class="grid-2">
+        <!-- БЛОК: ОБО МНЕ И ИГРЫ (В ОДИН РЯД) -->
+        <div class="main-grid">
             <div class="card">
-                <h2>🎀 Обо мне (◕‿◕)</h2>
+                <h2>🎀 Обо мне</h2>
                 <p>Привет! Мне 14 лет. Я увлекаюсь <strong>Программированием</strong>. Делаю био на заказ по <strong>100р</strong>.</p>
                 <p>Писать в ТГ: <a href="https://t.me/Scpsl1000h" target="_blank" style="color: #ff6b9d; text-decoration: none; border-bottom: 1px dashed #ff6b9d;">@Scpsl1000h</a></p>
                 <p>Люблю атмосферные игры, аниме и код.</p>
@@ -372,15 +276,17 @@
             </div>
         </div>
 
+        <!-- ГИФКА -->
         <div class="card" style="padding: 15px;">
             <div class="gif-container">
                 <img src="2.gif" alt="Гифка" class="floating-gif">
             </div>
         </div>
 
+        <!-- БЛОК: АНИМЕ (НА ВСЮ ШИРИНУ) -->
         <div class="card">
             <h2>🌸 Топ аниме</h2>
-            <div class="game-grid">
+            <div class="game-grid" style="grid-template-columns: repeat(4, 1fr);">
                 <a href="https://old.yummyani.me/catalog/item/bezdomnyy-bog" target="_blank" class="game-item">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQkZN3FThCpkUUJu_xXOcVe3Y5biBuU3rrH6TDiG_LA&s=10" alt="Бездомный бог ято">
                     <div class="game-title">Бездомный бог ято</div>
@@ -400,6 +306,7 @@
             </div>
         </div>
 
+        <!-- БЛОК: УМЕНИЯ -->
         <div class="card">
             <h2>💻 Люблю делать \(・∀・)/</h2>
             <div class="tags">
@@ -410,6 +317,7 @@
             </div>
         </div>
 
+        <!-- БЛОК: БОЛЬШЕ ЧЕМ ДРУГ -->
         <div class="card">
             <h2>❤️ Больше чем друг</h2>
             <div class="friends-row">
@@ -424,6 +332,7 @@
             </div>
         </div>
 
+        <!-- БЛОК: ЛУЧШИЕ ДРУЗЬЯ -->
         <div class="card">
             <h2>👑 Лучшие друзья</h2>
             <div class="friends-row">
@@ -449,46 +358,84 @@
     </div>
 
     <script>
-        // --- КРАСИВЫЕ ГЛАЗА, СЛЕДЯЩИЕ ЗА МЫШКОЙ ---
+        // --- ГЛАЗА, СЛЕДЯЩИЕ ЗА МЫШКОЙ ---
         document.addEventListener('mousemove', function(e) {
             const pupils = document.querySelectorAll('.pupil');
             const eyes = document.querySelectorAll('.eye');
-            
             eyes.forEach((eye, index) => {
                 const rect = eye.getBoundingClientRect();
                 const eyeX = rect.left + rect.width / 2;
                 const eyeY = rect.top + rect.height / 2;
-                
                 const angle = Math.atan2(e.pageY - eyeY, e.pageX - eyeX);
                 const distance = Math.min(12, Math.hypot(e.pageX - eyeX, e.pageY - eyeY) / 10);
-                
                 const pupilX = Math.cos(angle) * distance;
                 const pupilY = Math.sin(angle) * distance;
-                
                 pupils[index].style.transform = `translate(${pupilX}px, ${pupilY}px)`;
             });
         });
 
-        // --- ТАЙМЕР ДО ДНЯ РОЖДЕНИЯ (25 МАЯ) ---
+        // --- ТАЙМЕР ---
         function updateCountdown() {
             const now = new Date();
             let targetDate = new Date(now.getFullYear(), 4, 25, 0, 0, 0);
-            
-            if (now > targetDate) {
-                targetDate = new Date(now.getFullYear() + 1, 4, 25, 0, 0, 0);
-            }
-
+            if (now > targetDate) { targetDate = new Date(now.getFullYear() + 1, 4, 25, 0, 0, 0); }
             const diff = targetDate - now;
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((diff / 1000 / 60) % 60);
             const seconds = Math.floor((diff / 1000) % 60);
-
-            document.getElementById('countdown').innerHTML = 
-                `${days} <span>дней</span> ${hours} <span>часов</span><br>${minutes} <span>минут</span> ${seconds} <span>секунд</span>`;
+            document.getElementById('countdown').innerHTML = `${days} <span>дней</span> ${hours} <span>часов</span><br>${minutes} <span>минут</span> ${seconds} <span>секунд</span>`;
         }
-
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- МУЗЫКА С ВИЗУАЛИ
+        // --- МУЗЫКА ---
+        var music = document.getElementById("bg-music");
+        var btn = document.getElementById("play-btn");
+        var trackName = document.getElementById("track-name");
+        var playerContainer = document.getElementById("player-container");
+        const playlist = [{ src: "https://pomf2.lain.la/f/je2m2020.mp3", name: "MUSIC" }];
+        let isPlaying = false;
+        music.src = playlist[0].src;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause(); btn.innerHTML = "▶"; isPlaying = false; playerContainer.classList.remove("playing");
+            } else {
+                music.play().then(() => {
+                    btn.innerHTML = "⏸"; isPlaying = true; playerContainer.classList.add("playing");
+                }).catch(error => { alert("Ошибка! Не удалось воспроизвести музыку."); });
+            }
+        }
+
+        function playTrack(index) {
+            music.src = playlist[index].src; trackName.innerText = playlist[index].name;
+            music.load();
+            music.play().then(() => { btn.innerHTML = "⏸"; isPlaying = true; playerContainer.classList.add("playing"); }).catch(error => { alert("Ошибка загрузки файла."); });
+        }
+
+        // --- СЧЁТЧИК ---
+        window.onload = function() {
+            let count = localStorage.getItem('visitCount');
+            if (count === null) { count = 1; } else { count = parseInt(count) + 1; }
+            localStorage.setItem('visitCount', count);
+            document.getElementById('visit-count').innerText = count;
+        };
+
+        // --- ШЛЕЙФ ЗА МЫШКОЙ ---
+        document.addEventListener('mousemove', function(e) {
+            if (Math.random() > 0.3) return; 
+            let star = document.createElement('div');
+            star.classList.add('star-trail');
+            const symbols = ['✨', '⭐', '🌟', '✦'];
+            star.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            star.style.left = e.pageX + 'px';
+            star.style.top = e.pageY + 'px';
+            const size = Math.random() * 10 + 10;
+            star.style.fontSize = size + 'px';
+            document.body.appendChild(star);
+            setTimeout(() => { star.remove(); }, 800);
+        });
+    </script>
+</body>
+</html>
