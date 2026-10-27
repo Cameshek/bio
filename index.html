@@ -175,10 +175,8 @@
 </head>
 <body>
 
-    <!-- СКРЫТЫЙ ПЛЕЕР, КОТОРЫЙ БЕРЕТ ТВОЙ ФАЙЛ MUSIC.MP3 -->
-    <audio id="bg-music" loop style="display:none;">
-        <source src="music.mp3" type="audio/mpeg">
-    </audio>
+    <!-- СКРЫТЫЙ ПЛЕЕР, КОТОРЫЙ БЕРЕТ МУЗЫКУ ПО ТВОЕЙ ССЫЛКЕ -->
+    <audio id="bg-music" loop style="display:none;"></audio>
 
     <!-- ВИДИМЫЙ ПЛЕЕР -->
     <div class="music-player">
@@ -317,9 +315,9 @@
         var trackName = document.getElementById("track-name");
         var playlistItems = document.querySelectorAll(".playlist-item");
         
-        // ОСТАЛСЯ ТОЛЬКО ОДИН ТРЕК
+        // ТВОЯ ССЫЛКА НА МУЗЫКУ
         const playlist = [
-            { src: "music.mp3", name: "MUSIC" }
+            { src: "https://pomf2.lain.la/f/je2m2020.mp3", name: "MUSIC" }
         ];
         
         let isPlaying = false;
@@ -336,7 +334,7 @@
                     btn.innerHTML = "⏸";
                     isPlaying = true;
                 }).catch(error => {
-                    alert("Ошибка! Не удалось воспроизвести music.mp3. Убедись, что файл загружен на GitHub и весит не больше 10 МБ.");
+                    alert("Ошибка! Не удалось воспроизвести музыку по ссылке.");
                 });
             }
         }
@@ -355,7 +353,7 @@
                 btn.innerHTML = "⏸";
                 isPlaying = true;
             }).catch(error => {
-                alert("Ошибка загрузки файла music.mp3.");
+                alert("Ошибка загрузки файла.");
             });
         }
 
