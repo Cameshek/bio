@@ -42,39 +42,6 @@
             100% { opacity: 0; transform: scale(0.2) rotate(90deg) translateY(-20px); }
         }
 
-        /* --- ГЛАЗА (ПОКА CSS-ЗАГЛУШКА, ПОТОМ ЗАМЕНИМ НА КАРТИНКУ) --- */
-        .eyes-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
-            pointer-events: none;
-        }
-
-        .eye {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border: 3px solid #ff6b9d;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 15px rgba(255, 107, 157, 0.6);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .pupil {
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle at 30% 30%, #ff6b9d, #c44dff);
-            border-radius: 50%;
-            transition: transform 0.1s ease;
-        }
-
         /* --- ПЛЕЕР С МУЗЫКОЙ --- */
         .music-player {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
@@ -104,6 +71,21 @@
         .music-player.playing .bar:nth-child(5) { animation-delay: 0.05s; }
         @keyframes bounce { 0% { height: 4px; } 100% { height: 20px; } }
 
+        /* --- ВЫПАДАЮЩИЙ СПИСОК ПЕСЕН --- */
+        .playlist-dropdown {
+            position: absolute; top: 100%; right: 0; margin-top: 10px;
+            background: rgba(30, 10, 40, 0.95); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 157, 0.5); border-radius: 15px;
+            padding: 10px; min-width: 180px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
+            opacity: 0; visibility: hidden; transform: translateY(-10px);
+            transition: all 0.3s ease; display: flex; flex-direction: column; gap: 5px;
+        }
+        .music-player:hover .playlist-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+        .playlist-item { padding: 8px 15px; font-size: 0.85em; color: #d1c0d8; border-radius: 10px; transition: all 0.2s ease; text-align: left; }
+        .playlist-item:hover { background: rgba(255, 107, 157, 0.2); color: #fff; padding-left: 20px; }
+        .playlist-item.active { background: rgba(255, 107, 157, 0.3); color: #ff6b9d; font-weight: bold; }
+
         /* --- ФОН --- */
         .bg-flower { position: absolute; color: #ff6b9d; opacity: 0.3; font-size: 1.5em; pointer-events: none; animation: floatBg 6s ease-in-out infinite; }
         .f1 { top: 10%; left: 10%; animation-delay: 0s; }
@@ -113,23 +95,12 @@
         .f5 { top: 50%; left: 5%; animation-delay: 4s; }
         @keyframes floatBg { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
 
-        /* --- ОСНОВНОЙ КОНТЕЙНЕР (ТЕПЕРЬ 100% ШИРИНЫ) --- */
-        .container { 
-            max-width: 1000px; 
-            width: 100%; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px; 
-            z-index: 1; 
-        }
+        .container { max-width: 1000px; width: 100%; display: flex; flex-direction: column; gap: 20px; z-index: 1; }
 
         .card { 
-            background: rgba(45, 20, 55, 0.6); 
-            backdrop-filter: blur(10px); 
-            border: 1px solid rgba(255, 107, 157, 0.2); 
-            border-radius: 25px; 
-            padding: 25px 30px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 107, 157, 0.05); 
+            background: rgba(45, 20, 55, 0.6); backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 107, 157, 0.2); border-radius: 25px; 
+            padding: 25px 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 107, 157, 0.05); 
             transition: transform 0.3s ease, box-shadow 0.3s ease; 
         }
         .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(255, 107, 157, 0.2); }
@@ -137,12 +108,7 @@
         h1, h2 { font-size: 1.3em; color: #ff6b9d; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255, 107, 157, 0.5); display: flex; align-items: center; gap: 10px; }
         p { font-size: 1em; line-height: 1.6; color: #d1c0d8; margin-bottom: 10px; }
 
-        /* --- НОВАЯ СЕТКА (КРАСИВАЯ) --- */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Две колонки одинаковой ширины */
-            gap: 20px;
-        }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
         .avatar-wrapper { display: flex; justify-content: center; }
         .avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #ff6b9d; box-shadow: 0 0 25px rgba(255, 107, 157, 0.6); transition: transform 0.3s ease; }
@@ -164,7 +130,6 @@
         .friend-item:hover { transform: scale(1.05); }
         .friend-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ff6b9d; box-shadow: 0 0 20px rgba(255, 107, 157, 0.6); object-fit: cover; margin-bottom: 10px; }
 
-        /* ИГРЫ И АНИМЕ */
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
         .game-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 2 / 3; border: 1px solid rgba(255, 107, 157, 0.3); transition: all 0.3s ease; display: block; text-decoration: none; background: linear-gradient(45deg, #1a0b1f, #ff6b9d); }
         .game-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
@@ -173,44 +138,19 @@
         .game-title { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0, 0, 0, 0.9)); color: white; text-align: center; padding: 20px 5px 8px 5px; font-size: 0.8em; font-weight: bold; opacity: 0; transition: opacity 0.3s ease; }
         .game-item:hover .game-title { opacity: 1; }
 
-        /* ТАЙМЕР */
-        .timer-container {
-            text-align: center;
-            padding: 15px;
-            background: rgba(45, 20, 55, 0.4);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 107, 157, 0.3);
-            color: #ffb8d0;
-            font-size: 1.2em;
-        }
-        .timer-container span {
-            font-weight: bold;
-            color: #ff6b9d;
-            text-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
-            font-size: 1.3em;
-            margin: 0 5px;
-        }
+        .timer-container { text-align: center; padding: 15px; background: rgba(45, 20, 55, 0.4); border-radius: 20px; border: 1px solid rgba(255, 107, 157, 0.3); color: #ffb8d0; font-size: 1.2em; }
+        .timer-container span { font-weight: bold; color: #ff6b9d; text-shadow: 0 0 10px rgba(255, 107, 157, 0.8); font-size: 1.3em; margin: 0 5px; }
 
         .counter-container { text-align: center; padding: 15px; margin-top: 10px; background: rgba(45, 20, 55, 0.4); border-radius: 20px; border: 1px dashed rgba(255, 107, 157, 0.3); color: #ffb8d0; font-size: 0.9em; }
         .counter-number { font-weight: bold; color: #ff6b9d; font-size: 1.1em; text-shadow: 0 0 10px rgba(255, 107, 157, 0.8); }
 
-        @media (max-width: 768px) {
-            .main-grid { grid-template-columns: 1fr; } /* На телефонах в одну колонку */
-        }
+        @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <!-- ГЛАЗА -->
-    <div class="eyes-container">
-        <div class="eye"><div class="pupil" id="pupil1"></div></div>
-        <div class="eye"><div class="pupil" id="pupil2"></div></div>
-    </div>
-
-    <!-- СКРЫТЫЙ ПЛЕЕР -->
     <audio id="bg-music" loop style="display:none;"></audio>
 
-    <!-- ВИДИМЫЙ ПЛЕЕР -->
     <div class="music-player" id="player-container">
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
         <span class="music-text" id="track-name">MUSIC</span>
@@ -229,14 +169,12 @@
     <div class="bg-flower f5">✿</div>
 
     <div class="container">
-        <!-- АВАТАРКА СВЕРХУ ПО ЦЕНТРУ -->
         <div class="card" style="text-align: center;">
             <div class="avatar-wrapper">
                 <img src="1.png" alt="Аватар" class="avatar">
             </div>
         </div>
 
-        <!-- ТАЙМЕР -->
         <div class="card timer-container">
             <h2>🎂 До моего Дня Рождения осталось:</h2>
             <div id="countdown" style="font-size: 1.5em; margin-top: 10px; font-weight: bold; color: #ff6b9d; text-shadow: 0 0 10px rgba(255, 107, 157, 0.8);">
@@ -244,7 +182,6 @@
             </div>
         </div>
 
-        <!-- БЛОК: ОБО МНЕ И ИГРЫ (В ОДИН РЯД) -->
         <div class="main-grid">
             <div class="card">
                 <h2>🎀 Обо мне</h2>
@@ -276,14 +213,12 @@
             </div>
         </div>
 
-        <!-- ГИФКА -->
         <div class="card" style="padding: 15px;">
             <div class="gif-container">
                 <img src="2.gif" alt="Гифка" class="floating-gif">
             </div>
         </div>
 
-        <!-- БЛОК: АНИМЕ (НА ВСЮ ШИРИНУ) -->
         <div class="card">
             <h2>🌸 Топ аниме</h2>
             <div class="game-grid" style="grid-template-columns: repeat(4, 1fr);">
@@ -306,7 +241,6 @@
             </div>
         </div>
 
-        <!-- БЛОК: УМЕНИЯ -->
         <div class="card">
             <h2>💻 Люблю делать \(・∀・)/</h2>
             <div class="tags">
@@ -317,7 +251,6 @@
             </div>
         </div>
 
-        <!-- БЛОК: БОЛЬШЕ ЧЕМ ДРУГ -->
         <div class="card">
             <h2>❤️ Больше чем друг</h2>
             <div class="friends-row">
@@ -332,7 +265,6 @@
             </div>
         </div>
 
-        <!-- БЛОК: ЛУЧШИЕ ДРУЗЬЯ -->
         <div class="card">
             <h2>👑 Лучшие друзья</h2>
             <div class="friends-row">
@@ -358,22 +290,6 @@
     </div>
 
     <script>
-        // --- ГЛАЗА, СЛЕДЯЩИЕ ЗА МЫШКОЙ ---
-        document.addEventListener('mousemove', function(e) {
-            const pupils = document.querySelectorAll('.pupil');
-            const eyes = document.querySelectorAll('.eye');
-            eyes.forEach((eye, index) => {
-                const rect = eye.getBoundingClientRect();
-                const eyeX = rect.left + rect.width / 2;
-                const eyeY = rect.top + rect.height / 2;
-                const angle = Math.atan2(e.pageY - eyeY, e.pageX - eyeX);
-                const distance = Math.min(12, Math.hypot(e.pageX - eyeX, e.pageY - eyeY) / 10);
-                const pupilX = Math.cos(angle) * distance;
-                const pupilY = Math.sin(angle) * distance;
-                pupils[index].style.transform = `translate(${pupilX}px, ${pupilY}px)`;
-            });
-        });
-
         // --- ТАЙМЕР ---
         function updateCountdown() {
             const now = new Date();
@@ -399,19 +315,12 @@
         music.src = playlist[0].src;
 
         function toggleMusic() {
-            if (isPlaying) {
-                music.pause(); btn.innerHTML = "▶"; isPlaying = false; playerContainer.classList.remove("playing");
-            } else {
-                music.play().then(() => {
-                    btn.innerHTML = "⏸"; isPlaying = true; playerContainer.classList.add("playing");
-                }).catch(error => { alert("Ошибка! Не удалось воспроизвести музыку."); });
-            }
+            if (isPlaying) { music.pause(); btn.innerHTML = "▶"; isPlaying = false; playerContainer.classList.remove("playing"); }
+            else { music.play().then(() => { btn.innerHTML = "⏸"; isPlaying = true; playerContainer.classList.add("playing"); }).catch(error => { alert("Ошибка!"); }); }
         }
-
         function playTrack(index) {
-            music.src = playlist[index].src; trackName.innerText = playlist[index].name;
-            music.load();
-            music.play().then(() => { btn.innerHTML = "⏸"; isPlaying = true; playerContainer.classList.add("playing"); }).catch(error => { alert("Ошибка загрузки файла."); });
+            music.src = playlist[index].src; trackName.innerText = playlist[index].name; music.load();
+            music.play().then(() => { btn.innerHTML = "⏸"; isPlaying = true; playerContainer.classList.add("playing"); }).catch(error => { alert("Ошибка!"); });
         }
 
         // --- СЧЁТЧИК ---
@@ -422,7 +331,7 @@
             document.getElementById('visit-count').innerText = count;
         };
 
-        // --- ШЛЕЙФ ЗА МЫШКОЙ ---
+        // --- ШЛЕЙФ ---
         document.addEventListener('mousemove', function(e) {
             if (Math.random() > 0.3) return; 
             let star = document.createElement('div');
