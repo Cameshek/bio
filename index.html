@@ -42,6 +42,57 @@
             100% { opacity: 0; transform: scale(0.2) rotate(90deg) translateY(-20px); }
         }
 
+        /* --- ГЛАЗА, СЛЕДЯЩИЕ ЗА МЫШКОЙ --- */
+        .eyes-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 5px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .eye {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 3px solid #ff6b9d;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(255, 107, 157, 0.6);
+        }
+
+        .pupil {
+            width: 15px;
+            height: 15px;
+            background: #000;
+            border-radius: 50%;
+            transition: transform 0.1s ease;
+        }
+
+        /* --- ТАЙМЕР --- */
+        .timer-container {
+            text-align: center;
+            padding: 15px;
+            background: rgba(45, 20, 55, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 107, 157, 0.3);
+            color: #ffb8d0;
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+
+        .timer-container span {
+            font-weight: bold;
+            color: #ff6b9d;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
+            font-size: 1.3em;
+            margin: 0 5px;
+        }
+
         /* --- ПЛЕЕР С МУЗЫКОЙ --- */
         .music-player {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
@@ -60,55 +111,44 @@
         .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 107, 157, 0.8); }
         .music-text { font-size: 0.8em; color: #ffb8d0; font-weight: bold; letter-spacing: 1px; }
 
+        /* --- ВИЗУАЛИЗАТОР (ЭКВАЛАЙЗЕР) --- */
+        .visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 20px;
+            margin-left: 5px;
+        }
+        .bar {
+            width: 4px;
+            background: #ff6b9d;
+            border-radius: 2px;
+            height: 4px;
+            box-shadow: 0 0 5px #ff6b9d;
+            transition: height 0.1s ease;
+        }
+        .music-player.playing .bar { animation: bounce 0.5s infinite alternate; }
+        .music-player.playing .bar:nth-child(1) { animation-delay: 0.0s; }
+        .music-player.playing .bar:nth-child(2) { animation-delay: 0.1s; }
+        .music-player.playing .bar:nth-child(3) { animation-delay: 0.2s; }
+        .music-player.playing .bar:nth-child(4) { animation-delay: 0.15s; }
+        .music-player.playing .bar:nth-child(5) { animation-delay: 0.05s; }
+        @keyframes bounce { 0% { height: 4px; } 100% { height: 20px; } }
+
         /* --- ВЫПАДАЮЩИЙ СПИСОК ПЕСЕН --- */
         .playlist-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 10px;
-            background: rgba(30, 10, 40, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 107, 157, 0.5);
-            border-radius: 15px;
-            padding: 10px;
-            min-width: 180px;
+            position: absolute; top: 100%; right: 0; margin-top: 10px;
+            background: rgba(30, 10, 40, 0.95); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 157, 0.5); border-radius: 15px;
+            padding: 10px; min-width: 180px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
-            
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            opacity: 0; visibility: hidden; transform: translateY(-10px);
+            transition: all 0.3s ease; display: flex; flex-direction: column; gap: 5px;
         }
-
-        .music-player:hover .playlist-dropdown {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .playlist-item {
-            padding: 8px 15px;
-            font-size: 0.85em;
-            color: #d1c0d8;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            text-align: left;
-        }
-
-        .playlist-item:hover {
-            background: rgba(255, 107, 157, 0.2);
-            color: #fff;
-            padding-left: 20px;
-        }
-
-        .playlist-item.active {
-            background: rgba(255, 107, 157, 0.3);
-            color: #ff6b9d;
-            font-weight: bold;
-        }
+        .music-player:hover .playlist-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+        .playlist-item { padding: 8px 15px; font-size: 0.85em; color: #d1c0d8; border-radius: 10px; transition: all 0.2s ease; text-align: left; }
+        .playlist-item:hover { background: rgba(255, 107, 157, 0.2); color: #fff; padding-left: 20px; }
+        .playlist-item.active { background: rgba(255, 107, 157, 0.3); color: #ff6b9d; font-weight: bold; }
 
         /* --- ФОН --- */
         .bg-flower { position: absolute; color: #ff6b9d; opacity: 0.3; font-size: 1.5em; pointer-events: none; animation: floatBg 6s ease-in-out infinite; }
@@ -121,12 +161,7 @@
 
         .container { max-width: 800px; width: 100%; display: flex; flex-direction: column; gap: 25px; z-index: 1; }
 
-        .card {
-            background: rgba(45, 20, 55, 0.6); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 107, 157, 0.2); border-radius: 25px;
-            padding: 25px 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 107, 157, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        .card { background: rgba(45, 20, 55, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 107, 157, 0.2); border-radius: 25px; padding: 25px 30px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 107, 157, 0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(255, 107, 157, 0.2); }
 
         h1, h2 { font-size: 1.3em; color: #ff6b9d; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255, 107, 157, 0.5); display: flex; align-items: center; gap: 10px; }
@@ -170,19 +205,34 @@
             .card { padding: 20px; }
             .music-player { top: 10px; right: 10px; padding: 5px 10px; }
             .music-text { display: none; }
+            .eyes-container { bottom: 10px; right: 10px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- ГЛАЗА, СЛЕДЯЩИЕ ЗА МЫШКОЙ -->
+    <div class="eyes-container">
+        <div class="eye"><div class="pupil" id="pupil1"></div></div>
+        <div class="eye"><div class="pupil" id="pupil2"></div></div>
+    </div>
+
     <!-- СКРЫТЫЙ ПЛЕЕР -->
     <audio id="bg-music" loop style="display:none;"></audio>
 
-    <!-- ВИДИМЫЙ ПЛЕЕР -->
-    <div class="music-player">
+    <!-- ВИДИМЫЙ ПЛЕЕР С ВИЗУАЛИЗАТОРОМ -->
+    <div class="music-player" id="player-container">
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
         <span class="music-text" id="track-name">MUSIC</span>
         
+        <div class="visualizer">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+
         <div class="playlist-dropdown">
             <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC</div>
         </div>
@@ -198,6 +248,14 @@
         <div class="card" style="text-align: center;">
             <div class="avatar-wrapper">
                 <img src="1.png" alt="Аватар" class="avatar">
+            </div>
+        </div>
+
+        <!-- ТАЙМЕР ДО ДНЯ РОЖДЕНИЯ (25 МАЯ) -->
+        <div class="card timer-container">
+            <h2>🎂 До моего Дня Рождения осталось:</h2>
+            <div id="countdown" style="font-size: 1.5em; margin-top: 10px; font-weight: bold; color: #ff6b9d; text-shadow: 0 0 10px rgba(255, 107, 157, 0.8);">
+                Загрузка...
             </div>
         </div>
 
@@ -309,19 +367,59 @@
     </div>
 
     <script>
-        // --- МУЗЫКА ---
+        // --- ГЛАЗА, СЛЕДЯЩИЕ ЗА МЫШКОЙ ---
+        document.addEventListener('mousemove', function(e) {
+            const pupils = document.querySelectorAll('.pupil');
+            const eyes = document.querySelectorAll('.eye');
+            
+            eyes.forEach((eye, index) => {
+                const rect = eye.getBoundingClientRect();
+                const eyeX = rect.left + rect.width / 2;
+                const eyeY = rect.top + rect.height / 2;
+                
+                const angle = Math.atan2(e.pageY - eyeY, e.pageX - eyeX);
+                const distance = Math.min(10, Math.hypot(e.pageX - eyeX, e.pageY - eyeY) / 10); // Ограничиваем движение зрачка
+                
+                const pupilX = Math.cos(angle) * distance;
+                const pupilY = Math.sin(angle) * distance;
+                
+                pupils[index].style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+            });
+        });
+
+        // --- ТАЙМЕР ДО ДНЯ РОЖДЕНИЯ (25 МАЯ) ---
+        function updateCountdown() {
+            const now = new Date();
+            let targetDate = new Date(now.getFullYear(), 4, 25, 0, 0, 0); // 4 - это май (месяцы с 0)
+            
+            if (now > targetDate) {
+                targetDate = new Date(now.getFullYear() + 1, 4, 25, 0, 0, 0);
+            }
+
+            const diff = targetDate - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('countdown').innerHTML = 
+                `${days} <span>дней</span> ${hours} <span>часов</span><br>${minutes} <span>минут</span> ${seconds} <span>секунд</span>`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- МУЗЫКА С ВИЗУАЛИЗАТОРОМ ---
         var music = document.getElementById("bg-music");
         var btn = document.getElementById("play-btn");
         var trackName = document.getElementById("track-name");
-        var playlistItems = document.querySelectorAll(".playlist-item");
+        var playerContainer = document.getElementById("player-container");
         
-        // ТВОЯ ССЫЛКА НА МУЗЫКУ С POMF2.LAIN.LA
         const playlist = [
             { src: "https://pomf2.lain.la/f/je2m2020.mp3", name: "MUSIC" }
         ];
         
         let isPlaying = false;
-
         music.src = playlist[0].src;
 
         function toggleMusic() {
@@ -329,10 +427,12 @@
                 music.pause();
                 btn.innerHTML = "▶";
                 isPlaying = false;
+                playerContainer.classList.remove("playing");
             } else {
                 music.play().then(() => {
                     btn.innerHTML = "⏸";
                     isPlaying = true;
+                    playerContainer.classList.add("playing");
                 }).catch(error => {
                     alert("Ошибка! Не удалось воспроизвести музыку.");
                 });
@@ -343,15 +443,11 @@
             music.src = playlist[index].src;
             trackName.innerText = playlist[index].name;
             
-            playlistItems.forEach((item, i) => {
-                if (i === index) item.classList.add('active');
-                else item.classList.remove('active');
-            });
-
             music.load();
             music.play().then(() => {
                 btn.innerHTML = "⏸";
                 isPlaying = true;
+                playerContainer.classList.add("playing");
             }).catch(error => {
                 alert("Ошибка загрузки файла.");
             });
