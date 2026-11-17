@@ -7,8 +7,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* --- КАСТОМНЫЙ СКРОЛЛБАР --- */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #1a0b1f; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(#ff6b9d, #c44dff); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #ff6b9d; }
@@ -28,7 +27,6 @@
 
         a, button, .tag, .friend-link, .game-item, .friend-item, .playlist-item { cursor: url('cursor.png'), pointer; }
 
-        /* --- ШЛЕЙФ ЗА МЫШКОЙ (ЗВЁЗДОЧКИ) --- */
         .star-trail {
             position: absolute;
             pointer-events: none;
@@ -42,7 +40,6 @@
             100% { opacity: 0; transform: scale(0.2) rotate(90deg) translateY(-20px); }
         }
 
-        /* --- ПЛЕЕР С МУЗЫКОЙ --- */
         .music-player {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             background: rgba(45, 20, 55, 0.8); backdrop-filter: blur(10px);
@@ -58,9 +55,8 @@
             cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease;
         }
         .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 107, 157, 0.8); }
-        .music-text { font-size: 0.8em; color: #ffb8d0; font-weight: bold; letter-spacing: 1px; }
+        .music-text { font-size: 0.8em; color: #ffb8d0; font-weight: bold; letter-spacing: 1px; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* --- ВИЗУАЛИЗАТОР --- */
         .visualizer { display: flex; align-items: flex-end; gap: 3px; height: 20px; margin-left: 5px; }
         .bar { width: 4px; background: #ff6b9d; border-radius: 2px; height: 4px; box-shadow: 0 0 5px #ff6b9d; transition: height 0.1s ease; }
         .music-player.playing .bar { animation: bounce 0.5s infinite alternate; }
@@ -71,12 +67,11 @@
         .music-player.playing .bar:nth-child(5) { animation-delay: 0.05s; }
         @keyframes bounce { 0% { height: 4px; } 100% { height: 20px; } }
 
-        /* --- ВЫПАДАЮЩИЙ СПИСОК ПЕСЕН --- */
         .playlist-dropdown {
             position: absolute; top: 100%; right: 0; margin-top: 10px;
             background: rgba(30, 10, 40, 0.95); backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 107, 157, 0.5); border-radius: 15px;
-            padding: 10px; min-width: 180px;
+            padding: 10px; min-width: 220px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 107, 157, 0.3);
             opacity: 0; visibility: hidden; transform: translateY(-10px);
             transition: all 0.3s ease; display: flex; flex-direction: column; gap: 5px;
@@ -86,16 +81,22 @@
         .playlist-item:hover { background: rgba(255, 107, 157, 0.2); color: #fff; padding-left: 20px; }
         .playlist-item.active { background: rgba(255, 107, 157, 0.3); color: #ff6b9d; font-weight: bold; }
 
-        /* --- ФОН --- */
         .bg-flower { position: absolute; color: #ff6b9d; opacity: 0.3; font-size: 1.5em; pointer-events: none; animation: floatBg 6s ease-in-out infinite; }
-        .f1 { top: 10%; left: 10%; animation-delay: 0s; }
-        .f2 { top: 20%; right: 15%; animation-delay: 1s; }
-        .f3 { bottom: 15%; left: 20%; animation-delay: 2s; }
-        .f4 { bottom: 30%; right: 10%; animation-delay: 3s; }
-        .f5 { top: 50%; left: 5%; animation-delay: 4s; }
+        .f1 { top: 10%; left: 5%; animation-delay: 0s; }
+        .f2 { top: 20%; right: 5%; animation-delay: 1s; }
+        .f3 { bottom: 15%; left: 10%; animation-delay: 2s; }
+        .f4 { bottom: 30%; right: 8%; animation-delay: 3s; }
+        .f5 { top: 50%; left: 2%; animation-delay: 4s; }
         @keyframes floatBg { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
 
-        .container { max-width: 1000px; width: 100%; display: flex; flex-direction: column; gap: 20px; z-index: 1; }
+        .container { 
+            max-width: 1600px; 
+            width: 95%;        
+            display: flex; 
+            flex-direction: column; 
+            gap: 25px; 
+            z-index: 1; 
+        }
 
         .card { 
             background: rgba(45, 20, 55, 0.6); backdrop-filter: blur(10px); 
@@ -108,14 +109,18 @@
         h1, h2 { font-size: 1.3em; color: #ff6b9d; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255, 107, 157, 0.5); display: flex; align-items: center; gap: 10px; }
         p { font-size: 1em; line-height: 1.6; color: #d1c0d8; margin-bottom: 10px; }
 
-        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .main-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
+            gap: 25px; 
+        }
 
         .avatar-wrapper { display: flex; justify-content: center; }
         .avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid #ff6b9d; box-shadow: 0 0 25px rgba(255, 107, 157, 0.6); transition: transform 0.3s ease; }
         .avatar:hover { transform: scale(1.05); }
 
         .gif-container { display: flex; justify-content: center; margin: 10px 0; width: 100%; }
-        .floating-gif { width: 100%; height: auto; max-height: 250px; object-fit: cover; border-radius: 20px; box-shadow: 0 0 25px rgba(255, 107, 157, 0.4); animation: floatGif 3s ease-in-out infinite; }
+        .floating-gif { width: 100%; height: auto; max-height: 350px; object-fit: cover; border-radius: 20px; box-shadow: 0 0 25px rgba(255, 107, 157, 0.4); animation: floatGif 3s ease-in-out infinite; }
         @keyframes floatGif { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
 
         .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
@@ -130,7 +135,7 @@
         .friend-item:hover { transform: scale(1.05); }
         .friend-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ff6b9d; box-shadow: 0 0 20px rgba(255, 107, 157, 0.6); object-fit: cover; margin-bottom: 10px; }
 
-        .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-top: 15px; }
         .game-item { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 2 / 3; border: 1px solid rgba(255, 107, 157, 0.3); transition: all 0.3s ease; display: block; text-decoration: none; background: linear-gradient(45deg, #1a0b1f, #ff6b9d); }
         .game-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
         .game-item:hover { transform: translateY(-5px); box-shadow: 0 0 20px rgba(255, 107, 157, 0.6); border-color: #ff6b9d; z-index: 2; }
@@ -144,7 +149,11 @@
         .counter-container { text-align: center; padding: 15px; margin-top: 10px; background: rgba(45, 20, 55, 0.4); border-radius: 20px; border: 1px dashed rgba(255, 107, 157, 0.3); color: #ffb8d0; font-size: 0.9em; }
         .counter-number { font-weight: bold; color: #ff6b9d; font-size: 1.1em; text-shadow: 0 0 10px rgba(255, 107, 157, 0.8); }
 
-        @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { 
+            .main-grid { grid-template-columns: 1fr; } 
+            .container { width: 100%; padding: 0 10px; }
+            .game-grid { grid-template-columns: repeat(2, 1fr); } 
+        }
     </style>
 </head>
 <body>
@@ -157,9 +166,7 @@
         <div class="visualizer">
             <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
         </div>
-        <div class="playlist-dropdown">
-            <div class="playlist-item active" onclick="playTrack(0)">🎵 MUSIC</div>
-        </div>
+        <div class="playlist-dropdown" id="playlist-container"></div>
     </div>
 
     <div class="bg-flower f1">🌸</div>
@@ -221,10 +228,10 @@
 
         <div class="card">
             <h2>🌸 Топ аниме</h2>
-            <div class="game-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <div class="game-grid">
                 <a href="https://old.yummyani.me/catalog/item/bezdomnyy-bog" target="_blank" class="game-item">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVQkZN3FThCpkUUJu_xXOcVe3Y5biBuU3rrH6TDiG_LA&s=10" alt="Бездомный бог ято">
-                    <div class="game-title">Бездомный бог ято</div>
+                    <div class="game-title">Бездомный бог</div>
                 </a>
                 <a href="https://ru.yummyani.me/catalog/item/pyat-nevest" target="_blank" class="game-item">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrl9DecHHJTSvyEmZ5geoswCh20XSHFdYib2H7ARHuzw&s=10" alt="5 невест">
@@ -232,11 +239,11 @@
                 </a>
                 <a href="https://ru.yummyani.me/catalog/item/berserk" target="_blank" class="game-item">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxKFOd0IsQtbwBfKvOMmBL8J2thrvIIswC8f0uwyX1lA&s=10" alt="Берсек">
-                    <div class="game-title">Берсек</div>
+                    <div class="game-title">Берсерк</div>
                 </a>
                 <a href="https://old.yummyani.me/catalog/item/tokijskij-gul-tv-2" target="_blank" class="game-item">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYQeBzemvC6y70jL6k5h8KoNOTTKsBAIfb7i7pnCx6Ig&s=10" alt="Токильский гуль">
-                    <div class="game-title">Токильский гуль</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYQeBzemvC6y70jL6k5h8KoNOTTKsBAIfb7i7pnCx6Ig&s=10" alt="Токийский гуль">
+                    <div class="game-title">Токийский гуль</div>
                 </a>
             </div>
         </div>
@@ -251,21 +258,17 @@
             </div>
         </div>
 
-        <!-- ОБНОВЛЕННЫЙ БЛОК: БОЛЬШЕ ЧЕМ ДРУГ -->
         <div class="card">
             <h2>❤️ Больше чем друг</h2>
             <div class="friends-row">
-                <!-- Фундучок -->
                 <a href="https://steamcommunity.com/profiles/76561199780950714" target="_blank" class="friend-item">
                     <img src="https://avatars.fastly.steamstatic.com/a7cf871d6cb0d21a602c59d78b8a534484d8080b_full.jpg" alt="Фундучок" class="friend-avatar">
                     <span class="friend-link">Фундучок</span>
                 </a>
-                <!-- Маркиз -->
                 <a href="https://steamcommunity.com/profiles/76561199481408173" target="_blank" class="friend-item">
                     <img src="https://avatars.fastly.steamstatic.com/bca773364dce96ca990e3069bba9e703480dd159_full.jpg" alt="Маркиз" class="friend-avatar">
                     <span class="friend-link">Маркиз</span>
                 </a>
-                <!-- РАШИМЧИК (ДОБАВЛЕН) -->
                 <a href="https://steamcommunity.com/profiles/76561199031671055/" target="_blank" class="friend-item">
                     <img src="https://avatars.fastly.steamstatic.com/df260bbd344ea9e6a4e7ade13f1fca606ea3df0b_full.jpg" alt="Рашимчик" class="friend-avatar">
                     <span class="friend-link">Рашимчик</span>
@@ -313,23 +316,88 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- МУЗЫКА ---
+        // --- МУЗЫКА И ПЛЕЙЛИСТ ---
         var music = document.getElementById("bg-music");
         var btn = document.getElementById("play-btn");
         var trackName = document.getElementById("track-name");
         var playerContainer = document.getElementById("player-container");
-        const playlist = [{ src: "https://pomf2.lain.la/f/je2m2020.mp3", name: "MUSIC" }];
+        var playlistContainer = document.getElementById("playlist-container");
+
+        // ТВОЙ ПЛЕЙЛИСТ (локальные файлы)
+        const playlist = [
+            { 
+                src: "1.mp3", 
+                name: "Ослепительна" 
+            },
+            { 
+                src: "2.mp3", 
+                name: "Официантка" 
+            }
+        ];
+
         let isPlaying = false;
-        music.src = playlist[0].src;
+        let currentTrackIndex = 0;
+
+        function initPlayer() {
+            music.src = playlist[0].src;
+            trackName.innerText = playlist[0].name;
+            
+            playlistContainer.innerHTML = '';
+            
+            playlist.forEach((track, index) => {
+                let item = document.createElement('div');
+                item.classList.add('playlist-item');
+                if (index === 0) item.classList.add('active');
+                item.innerText = track.name;
+                item.onclick = () => playTrack(index);
+                playlistContainer.appendChild(item);
+            });
+        }
 
         function toggleMusic() {
-            if (isPlaying) { music.pause(); btn.innerHTML = "▶"; isPlaying = false; playerContainer.classList.remove("playing"); }
-            else { music.play().then(() => { btn.innerHTML = "⏸"; isPlaying = true; playerContainer.classList.add("playing"); }).catch(error => { alert("Ошибка!"); }); }
+            if (isPlaying) { 
+                music.pause(); 
+                btn.innerHTML = "▶"; 
+                isPlaying = false; 
+                playerContainer.classList.remove("playing"); 
+            } else { 
+                music.play().then(() => { 
+                    btn.innerHTML = "⏸"; 
+                    isPlaying = true; 
+                    playerContainer.classList.add("playing"); 
+                }).catch(error => { 
+                    alert("Ошибка! Убедись, что файлы 1.mp3 и 2.mp3 лежат в той же папке, что и HTML."); 
+                }); 
+            }
         }
+
         function playTrack(index) {
-            music.src = playlist[index].src; trackName.innerText = playlist[index].name; music.load();
-            music.play().then(() => { btn.innerHTML = "⏸"; isPlaying = true; playerContainer.classList.add("playing"); }).catch(error => { alert("Ошибка!"); });
+            currentTrackIndex = index;
+            music.src = playlist[index].src; 
+            trackName.innerText = playlist[index].name; 
+            music.load();
+            
+            const items = document.querySelectorAll('.playlist-item');
+            items.forEach((item, i) => {
+                if (i === index) item.classList.add('active');
+                else item.classList.remove('active');
+            });
+
+            music.play().then(() => { 
+                btn.innerHTML = "⏸"; 
+                isPlaying = true; 
+                playerContainer.classList.add("playing"); 
+            }).catch(error => { 
+                alert("Ошибка воспроизведения! Проверь, что файл " + playlist[index].src + " существует."); 
+            });
         }
+
+        music.addEventListener('ended', function() {
+            let nextIndex = (currentTrackIndex + 1) % playlist.length;
+            playTrack(nextIndex);
+        });
+
+        initPlayer();
 
         // --- СЧЁТЧИК ---
         window.onload = function() {
