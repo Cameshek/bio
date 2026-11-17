@@ -40,6 +40,7 @@
             100% { opacity: 0; transform: scale(0.2) rotate(90deg) translateY(-20px); }
         }
 
+        /* --- НОВЫЙ ПЛЕЕР (С YOUTUBE) --- */
         .music-player {
             position: fixed; top: 20px; right: 20px; z-index: 1000;
             background: rgba(45, 20, 55, 0.8); backdrop-filter: blur(10px);
@@ -80,6 +81,11 @@
         .playlist-item { padding: 8px 15px; font-size: 0.85em; color: #d1c0d8; border-radius: 10px; transition: all 0.2s ease; text-align: left; }
         .playlist-item:hover { background: rgba(255, 107, 157, 0.2); color: #fff; padding-left: 20px; }
         .playlist-item.active { background: rgba(255, 107, 157, 0.3); color: #ff6b9d; font-weight: bold; }
+
+        /* Скрытый iframe для YouTube */
+        #youtube-player {
+            position: fixed; bottom: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;
+        }
 
         .bg-flower { position: absolute; color: #ff6b9d; opacity: 0.3; font-size: 1.5em; pointer-events: none; animation: floatBg 6s ease-in-out infinite; }
         .f1 { top: 10%; left: 5%; animation-delay: 0s; }
@@ -158,7 +164,8 @@
 </head>
 <body>
 
-    <audio id="bg-music" loop style="display:none;"></audio>
+    <!-- Скрытый контейнер для YouTube плеера -->
+    <div id="youtube-player"></div>
 
     <div class="music-player" id="player-container">
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">▶</button>
@@ -316,32 +323,60 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- МУЗЫКА И ПЛЕЙЛИСТ ---
-        var music = document.getElementById("bg-music");
+        // --- МУЗЫКА (YOUTUBE) ---
         var btn = document.getElementById("play-btn");
         var trackName = document.getElementById("track-name");
         var playerContainer = document.getElementById("player-container");
         var playlistContainer = document.getElementById("playlist-container");
+        var ytPlayerContainer = document.getElementById("youtube-player");
 
-        // ТВОЙ ПЛЕЙЛИСТ (локальные файлы)
+        // ТВОЙ ПЛЕЙЛИСТ (ID видео из ссылок)
+        // Ссылка 1: rofYJsprJv0
+        // Ссылка 2: zoeicAsPkv8
         const playlist = [
-            { 
-                src: "1.mp3", 
-                name: "Ослепительна" 
-            },
-            { 
-                src: "2.mp3", 
-                name: "Официантка" 
-            }
+            { videoId: "rofYJsprJv0", name: "Плейлист 1" },
+            { videoId: "zoeicAsPkv8", name: "Плейлист 2" }
         ];
 
         let isPlaying = false;
         let currentTrackIndex = 0;
+        let ytPlayer;
 
-        function initPlayer() {
-            music.src = playlist[0].src;
+        // Функция, которая вызывается, когда YouTube API готов
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('youtube-player', {
+                height: '1',
+                width: '1',
+                videoId: playlist[0].videoId,
+                playerVars: {
+                    'playsinline': 1,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'modestbranding': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Плеер готов, но мы не запускаем музыку автоматически (браузеры блокируют автоплей)
+            initPlaylist();
+        }
+
+        function onPlayerStateChange(event) {
+            // Если видео закончилось (состояние 0), включаем следующий трек
+            if (event.data === 0) {
+                let nextIndex = (currentTrackIndex + 1) % playlist.length;
+                playTrack(nextIndex);
+            }
+        }
+
+        function initPlaylist() {
             trackName.innerText = playlist[0].name;
-            
             playlistContainer.innerHTML = '';
             
             playlist.forEach((track, index) => {
@@ -355,27 +390,27 @@
         }
 
         function toggleMusic() {
+            if (!ytPlayer) return; // Ждём загрузки API
+
             if (isPlaying) { 
-                music.pause(); 
+                ytPlayer.pauseVideo(); 
                 btn.innerHTML = "▶"; 
                 isPlaying = false; 
                 playerContainer.classList.remove("playing"); 
             } else { 
-                music.play().then(() => { 
-                    btn.innerHTML = "⏸"; 
-                    isPlaying = true; 
-                    playerContainer.classList.add("playing"); 
-                }).catch(error => { 
-                    alert("Ошибка! Убедись, что файлы 1.mp3 и 2.mp3 лежат в той же папке, что и HTML."); 
-                }); 
+                ytPlayer.playVideo(); 
+                btn.innerHTML = "⏸"; 
+                isPlaying = true; 
+                playerContainer.classList.add("playing"); 
             }
         }
 
         function playTrack(index) {
+            if (!ytPlayer) return;
+
             currentTrackIndex = index;
-            music.src = playlist[index].src; 
-            trackName.innerText = playlist[index].name; 
-            music.load();
+            ytPlayer.loadVideoById(playlist[index].videoId);
+            trackName.innerText = playlist[index].name;
             
             const items = document.querySelectorAll('.playlist-item');
             items.forEach((item, i) => {
@@ -383,21 +418,16 @@
                 else item.classList.remove('active');
             });
 
-            music.play().then(() => { 
-                btn.innerHTML = "⏸"; 
-                isPlaying = true; 
-                playerContainer.classList.add("playing"); 
-            }).catch(error => { 
-                alert("Ошибка воспроизведения! Проверь, что файл " + playlist[index].src + " существует."); 
-            });
+            btn.innerHTML = "⏸"; 
+            isPlaying = true; 
+            playerContainer.classList.add("playing"); 
         }
 
-        music.addEventListener('ended', function() {
-            let nextIndex = (currentTrackIndex + 1) % playlist.length;
-            playTrack(nextIndex);
-        });
-
-        initPlayer();
+        // Загружаем YouTube API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         // --- СЧЁТЧИК ---
         window.onload = function() {
